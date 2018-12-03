@@ -16,14 +16,6 @@ countTwosAndThrees s = let counter = Map.elems $ countVals s
                      in (elem 2 counter, elem 3 counter)
 
 
-type Counter a = Map.Map a Int
-
-increment :: Ord a => a -> Counter a -> Counter a
-increment a c = Map.insert a (1 + (Map.findWithDefault 0 a c)) c
-
-countVals :: Ord a => [a] -> Counter a
-countVals = foldl (flip increment) Map.empty
-
 atMost (-1) _ = False
 atMost _ [] = True
 atMost v (x:xs) = let v' = if x then v - 1 else v in atMost v' xs
