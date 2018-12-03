@@ -1,4 +1,4 @@
-import qualified Data.Set as Set
+import Data.Set (Set, empty, member, insert)
 import Common
 
 parseInt :: String -> Int
@@ -9,13 +9,11 @@ solve 2 input =
     let sums = scanl (+) 0 (cycle input)
     in findRepeated sums
 
-type Memory a = Set.Set a
-
-touch :: Ord a => a -> Memory a -> (Bool, Memory a)
-touch a m = let seen = Set.member a m in (seen, Set.insert a m)
+touch :: Ord a => a -> Set a -> (Bool, Set a)
+touch a m = let seen = member a m in (seen, insert a m)
 
 findRepeated :: Ord a => [a] -> a
-findRepeated xs = find Set.empty $ xs
+findRepeated xs = find empty $ xs
     where find m (x:xs) = let (seen, m') = touch x m
                           in if seen then x else find m' xs
 
