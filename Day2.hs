@@ -7,8 +7,7 @@ solve 1 input =
     in show $ (countTrues twos) * (countTrues threes)
 
 solve 2 input =
-    let words = map (filter (/= ' ')) input
-    in uncurry common $ head $ filter (uncurry areSimilar) $ pairs words
+    uncurry common $ head $ filter (uncurry areSimilar) $ pairs input
 
 
 countTwosAndThrees :: Ord a => [a] -> (Bool, Bool)

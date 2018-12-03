@@ -14,19 +14,13 @@ enumArea a = let t = top a
                  ys = [t..t + (height a) - 1]
              in [(x, y) | x <- xs, y <- ys]
 
-area :: GenParser Char st Area
 area = do
-    char '#'
-    areaId_ <- integer
-    spaces >> char '@' >> spaces
-    left_ <- integer
-    char ','
-    top_ <- integer
-    char ':' >> spaces
-    w <- integer
-    char 'x'
-    h <- integer
-    return $ Area areaId_ left_ top_ w h
+    id <- char '#' >> integer
+    left <- spaces >> char '@' >> spaces >> integer
+    top <- char ',' >> integer
+    w <- char ':' >> spaces >> integer
+    h <- char 'x' >> integer
+    return $ Area id left top w h
 
 integer = read <$> many1 digit
 
@@ -35,12 +29,12 @@ fromRight (Right a) = a
 parseArea :: String -> Area
 parseArea input = fromRight $ parse area "" input
 
-countUse areas = countVals $ areas >>= enumArea
+countOverlap areas = countVals $ areas >>= enumArea
 
-solve 1 areas = let count = countUse areas
+solve 1 areas = let count = countOverlap areas
                 in length $ filter (>1) $ Map.elems count
 
-solve 2 areas = let count = countUse areas
+solve 2 areas = let count = countOverlap areas
                     isGoodCell c = (fromJust $ Map.lookup c count) == 1
                     isGood a = all isGoodCell $ enumArea a
                 in areaId $ head $ filter isGood areas
