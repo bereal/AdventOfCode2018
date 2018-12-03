@@ -41,7 +41,8 @@ solve 1 areas = let count = countUse areas
                 in length $ filter (>1) $ Map.elems count
 
 solve 2 areas = let count = countUse areas
-                    isGood a = all (\c -> (fromJust $ Map.lookup c count) == 1) $ enumArea a
+                    isGoodCell c = (fromJust $ Map.lookup c count) == 1
+                    isGood a = all isGoodCell $ enumArea a
                 in areaId $ head $ filter isGood areas
 
 
